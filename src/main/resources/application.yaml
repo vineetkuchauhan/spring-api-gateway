@@ -1,0 +1,34 @@
+server:
+  port: 9090
+
+spring:
+  redis:
+    host: redis
+    port: 6379
+  application:
+    name: spring-api-gateway
+  cloud:
+    gateway:
+      default-filters:
+        - name: SpringCloudGatewayGlobalFilter
+      routes:
+        - id: ms2
+          uri: http://localhost:8081/
+          predicates:
+            - Path=/ms2/**
+        - id: ms1
+          uri: http://localhost:8080/
+          predicates:
+            - Path=/ms1/**
+          filters:
+#            - name: RequestRateLimiter
+            - name: BasicAuthUsernameExtractorFilter
+            - name: RateLimitingForAdminUserFilter
+              args:
+#                key-resolver: "#{@userKeyResolver}"
+                redis-rate-limiter:
+                  replenishRate: 20
+                  burstCapacity: 40
+                  requestedTokens: 1
+            - name: SpringCloudGatewayPreFilter
+            - name: SpringCloudGatewayPostFilter
