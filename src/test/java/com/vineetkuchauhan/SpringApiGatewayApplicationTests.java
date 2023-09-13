@@ -9,5 +9,4 @@ class SpringApiGatewayApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }

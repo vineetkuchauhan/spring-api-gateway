@@ -1,5 +1,6 @@
 package com.vineetkuchauhan.filters;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpStatus;
@@ -8,8 +9,8 @@ import org.springframework.stereotype.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class RateLimitingForAdminUserFilter extends AbstractGatewayFilterFactory<RateLimitingForAdminUserFilter.Config> {
@@ -17,6 +18,7 @@ public class RateLimitingForAdminUserFilter extends AbstractGatewayFilterFactory
 
     private static final Logger logger = LoggerFactory.getLogger(RateLimitingForAdminUserFilter.class);
     private static final ConcurrentHashMap<String, AtomicInteger> requestCounters = new ConcurrentHashMap<>();
+
 
     public RateLimitingForAdminUserFilter() {
         super(Config.class);
@@ -49,11 +51,11 @@ public class RateLimitingForAdminUserFilter extends AbstractGatewayFilterFactory
     private boolean isRateLimited(String username) {
         // Implement rate limiting logic here
         AtomicInteger counter = requestCounters.computeIfAbsent(username, u -> new AtomicInteger(0));
+        logger.info("Counter : " + counter);
         int currentCount = counter.incrementAndGet();
-        if (currentCount > 10) { // Adjust the limit as needed
-            return true;
-        }
-        return false;
+        logger.info("Next Counter : " + currentCount);
+        // Adjust the limit as needed
+        return currentCount > 10;
     }
 
     public static class Config {

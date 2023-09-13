@@ -24,6 +24,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework:spring-core'
+	implementation 'io.netty:netty-resolver-dns-native-macos:4.1.72.Final:osx-aarch_64'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

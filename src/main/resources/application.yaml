@@ -12,23 +12,22 @@ spring:
       default-filters:
         - name: SpringCloudGatewayGlobalFilter
       routes:
-        - id: ms2
-          uri: http://localhost:8081/
-          predicates:
-            - Path=/ms2/**
         - id: ms1
           uri: http://localhost:8080/
           predicates:
             - Path=/ms1/**
-          filters:
+        - id: ms2
+          uri: http://localhost:8081/
+          predicates:
+            - Path=/ms2/**
+#          filters:
 #            - name: RequestRateLimiter
-            - name: BasicAuthUsernameExtractorFilter
-            - name: RateLimitingForAdminUserFilter
-              args:
-#                key-resolver: "#{@userKeyResolver}"
-                redis-rate-limiter:
-                  replenishRate: 20
-                  burstCapacity: 40
-                  requestedTokens: 1
-            - name: SpringCloudGatewayPreFilter
-            - name: SpringCloudGatewayPostFilter
+#              args:
+##                key-resolver: "#{@userKeyResolver}"
+#                redis-rate-limiter:
+#                  replenishRate: 2
+#                  burstCapacity: 2
+#                  requestedTokens: 1
+#            - name: RateLimitingForAdminUserFilter
+#            - name: SpringCloudGatewayPreFilter
+#            - name: SpringCloudGatewayPostFilter
